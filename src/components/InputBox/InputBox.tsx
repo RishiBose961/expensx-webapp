@@ -1,8 +1,10 @@
+import { ChangeEventHandler } from 'react';
+
 interface AboutInfo {
   title: string;
   type: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 }
 const InputBox = ({ title, type,value,onChange }: AboutInfo) => {
   return (

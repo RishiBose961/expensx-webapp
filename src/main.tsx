@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "./store.ts";
 
 import "./index.css";
-
+import { Toaster } from "@/components/ui/toaster";
 // Import the generated route tree
 import { routeTree } from "./routeTree.gen";
 
@@ -28,6 +28,7 @@ createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
       <ThemeProvider>
         <QueryClientProvider client={queryClient}>
+          <Toaster />
           <RouterProvider router={router} />
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

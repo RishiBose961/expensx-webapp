@@ -1,5 +1,12 @@
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, LabelList, Line, LineChart, XAxis } from "recharts"
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  XAxis,
+  YAxis,
+} from "recharts";
+
 import {
   Card,
   CardContent,
@@ -7,21 +14,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-]
+} from "@/components/ui/chart";
+import GraphTotalExpense from "@/hook/HookExpense/GraphTotalExpense";
+import { Link } from "@tanstack/react-router";
+
 const chartConfig = {
   desktop: {
     label: "Desktop",
@@ -31,67 +33,99 @@ const chartConfig = {
     label: "Mobile",
     color: "hsl(var(--chart-2))",
   },
-} satisfies ChartConfig
+  label: {
+    color: "hsl(var(--background))",
+  },
+} satisfies ChartConfig;
+
 export function ChartPage() {
+  const { isPending, fetchgraphicExpense } = GraphTotalExpense() as {
+    isPending: boolean;
+    fetchgraphicExpense: { monthlyExpenses: [] };
+  };
+
+  const getMonthName = (dateString: string) => {
+    const [year, month] = dateString.split("-"); // Extract year and month
+    return new Date(`${year}-${month}-01`).toLocaleString("en-US", {
+      month: "short",
+    }); // "Jan"
+  };
+
+  const chartData = fetchgraphicExpense?.monthlyExpenses
+    ? Object?.entries(fetchgraphicExpense?.monthlyExpenses)?.map(
+        ([key, value]) => ({
+          month: getMonthName(key), // e.g., "2025-01"
+          expense: value, // Expense value
+        })
+      )
+    : [];
+
+  if (isPending) {
+    return <p className="text-center text-gray-500">Loading...</p>;
+  }
+
+  if (chartData.length === 0) {
+    return <p className="text-center text-gray-500">No data available</p>;
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Line Chart - Label</CardTitle>
+        <CardTitle>Expense Tracker</CardTitle>
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <LineChart
+          <BarChart
             accessibilityLayer
             data={chartData}
+            layout="vertical"
             margin={{
-              top: 20,
-              left: 12,
-              right: 12,
+              right: 16,
             }}
           >
-            <CartesianGrid vertical={false} />
-            <XAxis
+            <CartesianGrid horizontal={false} />
+            <YAxis
               dataKey="month"
+              type="category"
               tickLine={false}
+              tickMargin={10}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              hide
             />
+            <XAxis dataKey="expense" type="number" />
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent indicator="line" />}
             />
-            <Line
-              dataKey="desktop"
-              type="natural"
-              stroke="var(--color-desktop)"
-              strokeWidth={2}
-              dot={{
-                fill: "var(--color-desktop)",
-              }}
-              activeDot={{
-                r: 6,
-              }}
+            <Bar
+              dataKey="expense"
+              layout="vertical"
+              fill="var(--color-desktop)"
+              radius={4}
             >
               <LabelList
-                position="top"
-                offset={12}
-                className="fill-foreground"
+                dataKey="month"
+                position="insideLeft"
+                offset={8}
+                className="fill-[--color-label]"
                 fontSize={12}
               />
-            </Line>
-          </LineChart>
+            </Bar>
+          </BarChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 font-medium leading-none">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
         <div className="leading-none text-muted-foreground">
-          Showing total visitors for the last 6 months
+          Showing the total expenses for the months. More Information{" "}
+          <Link
+            to="/statistical"
+            className=" uppercase font-bold text-blue-500"
+          >
+            Statistical
+          </Link>.
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

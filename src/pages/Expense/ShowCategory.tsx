@@ -3,22 +3,22 @@ import ExpenseCategory from "@/hook/ExpenseCategory";
 const ShowCategory = () => {
   const { isPending, fetchCategory } = ExpenseCategory() as {
     isPending: boolean;
-    fetchCategory: { categorybased: [] };
+    fetchCategory: Array<{ categorybased: string }>;
   };
-
   return (
     <div>
       <h2>Category</h2>
-      {/* Add your category component here */}
       <div className="grid grid-cols-2 lg:grid-cols-4 px-2 mt-4">
-        {fetchCategory?.categorybased?.map((category, index) => (
+        {fetchCategory?.map((category, index) => (
           <div
             key={index}
             className="relative p-2 border-2 text-center  rounded-md group transition duration-300 ease-in-out"
           >
-            {category}
-            <button className="absolute inset-0 bg-black dark:bg-white font-semibold  text-white dark:text-black 
-             py-1 px-3 rounded-md opacity-0 group-hover:opacity-100 transition duration-300">
+            {category.categorybased}
+            <button
+              className="absolute inset-0 bg-black dark:bg-white font-semibold  text-white dark:text-black 
+             py-1 px-3 rounded-md opacity-0 group-hover:opacity-100 transition duration-300"
+            >
               UPDATE
             </button>
           </div>

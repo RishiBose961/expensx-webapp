@@ -15,7 +15,6 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 export function CreateCategory() {
-  const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState("");
 
@@ -23,12 +22,11 @@ export function CreateCategory() {
     (state: { auth: { user: { token: string } } }) => state.auth.user
   );
 
- 
   const createPostMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
         `http://localhost:5000/api/cr/category-expense`,
-        { categorybased: tags },
+        { categorybased: inputValue },
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -39,7 +37,6 @@ export function CreateCategory() {
     },
     onSuccess: (data) => {
       console.log("Category created successfully:", data);
-      setTags([]);
       setInputValue("");
       setError("");
     },
@@ -57,30 +54,7 @@ export function CreateCategory() {
     e.preventDefault();
     setError("");
 
-    if (tags.length === 0) {
-      setError("Please add at least one category.");
-      return;
-    }
-
     createPostMutation.mutate();
-  };
-
-  const handleAddTag = () => {
-    if (inputValue.trim() && !tags.includes(inputValue.trim())) {
-      setTags([...tags, inputValue.trim()]);
-      setInputValue("");
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleAddTag();
-    }
-  };
-
-  const handleRemoveTag = (index: number) => {
-    setTags(tags.filter((_, i) => i !== index));
   };
 
   return (
@@ -100,34 +74,13 @@ export function CreateCategory() {
             <div className="flex items-center gap-2">
               <input
                 type="text"
-                className="w-full p-2 border rounded text-black"
-                placeholder="Type and press Enter..."
+                className="w-full p-2 border rounded capitalize text-black"
+                placeholder="Type your category"
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
-                onKeyDown={handleKeyDown}
               />
-              <Button type="button" onClick={handleAddTag}>
-                Add
-              </Button>
             </div>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {tags.map((tag, index) => (
-                <div
-                  key={index}
-                  className="flex items-center bg-blue-500 text-white px-2 py-1 rounded"
-                >
-                  {tag}
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveTag(index)}
-                    className="ml-2 text-sm font-bold"
-                    aria-label={`Remove ${tag}`}
-                  >
-                    ×
-                  </button>
-                </div>
-              ))}
-            </div>
+
             {error && <p className="text-red-500 text-sm">{error}</p>}
             <Button type="submit" disabled={createPostMutation.isPending}>
               {createPostMutation.isPending ? "Saving..." : "Save changes"}

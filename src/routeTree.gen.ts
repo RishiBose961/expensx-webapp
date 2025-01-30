@@ -15,6 +15,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as SecurityLoginImport } from './routes/security/login'
 import { Route as CreateExpenseImport } from './routes/create/expense'
+import { Route as CalcCalcImport } from './routes/calc/calc'
+import { Route as analysisStatisticalImport } from './routes/(analysis)/statistical'
 
 // Create Virtual Routes
 
@@ -63,6 +65,18 @@ const CreateExpenseRoute = CreateExpenseImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CalcCalcRoute = CalcCalcImport.update({
+  id: '/calc/calc',
+  path: '/calc/calc',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const analysisStatisticalRoute = analysisStatisticalImport.update({
+  id: '/(analysis)/statistical',
+  path: '/statistical',
+  getParentRoute: () => rootRoute,
+} as any)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -72,6 +86,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/(analysis)/statistical': {
+      id: '/(analysis)/statistical'
+      path: '/statistical'
+      fullPath: '/statistical'
+      preLoaderRoute: typeof analysisStatisticalImport
+      parentRoute: typeof rootRoute
+    }
+    '/calc/calc': {
+      id: '/calc/calc'
+      path: '/calc/calc'
+      fullPath: '/calc/calc'
+      preLoaderRoute: typeof CalcCalcImport
       parentRoute: typeof rootRoute
     }
     '/create/expense': {
@@ -116,6 +144,8 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/statistical': typeof analysisStatisticalRoute
+  '/calc/calc': typeof CalcCalcRoute
   '/create/expense': typeof CreateExpenseRoute
   '/security/login': typeof SecurityLoginRoute
   '/create/budget': typeof CreateBudgetLazyRoute
@@ -125,6 +155,8 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/statistical': typeof analysisStatisticalRoute
+  '/calc/calc': typeof CalcCalcRoute
   '/create/expense': typeof CreateExpenseRoute
   '/security/login': typeof SecurityLoginRoute
   '/create/budget': typeof CreateBudgetLazyRoute
@@ -135,6 +167,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/(analysis)/statistical': typeof analysisStatisticalRoute
+  '/calc/calc': typeof CalcCalcRoute
   '/create/expense': typeof CreateExpenseRoute
   '/security/login': typeof SecurityLoginRoute
   '/create/budget': typeof CreateBudgetLazyRoute
@@ -146,6 +180,8 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/statistical'
+    | '/calc/calc'
     | '/create/expense'
     | '/security/login'
     | '/create/budget'
@@ -154,6 +190,8 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/statistical'
+    | '/calc/calc'
     | '/create/expense'
     | '/security/login'
     | '/create/budget'
@@ -162,6 +200,8 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/(analysis)/statistical'
+    | '/calc/calc'
     | '/create/expense'
     | '/security/login'
     | '/create/budget'
@@ -172,6 +212,8 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  analysisStatisticalRoute: typeof analysisStatisticalRoute
+  CalcCalcRoute: typeof CalcCalcRoute
   CreateExpenseRoute: typeof CreateExpenseRoute
   SecurityLoginRoute: typeof SecurityLoginRoute
   CreateBudgetLazyRoute: typeof CreateBudgetLazyRoute
@@ -181,6 +223,8 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  analysisStatisticalRoute: analysisStatisticalRoute,
+  CalcCalcRoute: CalcCalcRoute,
   CreateExpenseRoute: CreateExpenseRoute,
   SecurityLoginRoute: SecurityLoginRoute,
   CreateBudgetLazyRoute: CreateBudgetLazyRoute,
@@ -199,6 +243,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/(analysis)/statistical",
+        "/calc/calc",
         "/create/expense",
         "/security/login",
         "/create/budget",
@@ -208,6 +254,12 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/(analysis)/statistical": {
+      "filePath": "(analysis)/statistical.tsx"
+    },
+    "/calc/calc": {
+      "filePath": "calc/calc.tsx"
     },
     "/create/expense": {
       "filePath": "create/expense.tsx"

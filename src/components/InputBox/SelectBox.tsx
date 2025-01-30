@@ -2,11 +2,13 @@ import ExpenseCategory from "@/hook/ExpenseCategory";
 
 interface AboutInfo {
   title: string;
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
 }
-const SelectBox = ({ title }: AboutInfo) => {
+const SelectBox = ({ title,value,onChange }: AboutInfo) => {
   const { isPending, fetchCategory } = ExpenseCategory() as {
     isPending: boolean;
-    fetchCategory: { categorybased: [] };
+    fetchCategory: Array<{ categorybased: string }>;
   };
 
   return (
@@ -24,11 +26,14 @@ const SelectBox = ({ title }: AboutInfo) => {
           <select
             name="HeadlineAct"
             id="HeadlineAct"
+            value={value}
+            onChange={onChange}
             className="mt-1.5 w-full p-4 rounded-lg border-gray-300 bg-white text-gray-700 sm:text-sm
                   dark:bg-black ring-1 ring-gray-200 dark:ring-white  capitalize dark:text-gray-200"
           >
-            {fetchCategory?.categorybased?.map((category, index) => (
-              <option key={index} value={category} className=" capitalize">{category}</option>
+              <option value="" selected disabled hidden>Choose here</option>
+            {fetchCategory?.map((category, index) => (
+              <option key={index} value={category?.categorybased} className=" capitalize">{category?.categorybased}</option>
             ))}
           </select>
         )}
