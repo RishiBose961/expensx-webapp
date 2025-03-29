@@ -11,6 +11,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import axios from "axios";
+import { ListTodo } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -60,7 +61,10 @@ export function CreateCategory() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <p className="cursor-pointer underline text-white">Add</p>
+      <div className="bg-indigo-600 p-3 flex justify-evenly text-white mb-3 mt-2 rounded-full cursor-pointer">
+      <ListTodo />
+      </div>
+      
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

@@ -2,9 +2,8 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  LabelList,
   XAxis,
-  YAxis,
+  YAxis
 } from "recharts";
 
 import {
@@ -68,11 +67,13 @@ export function ChartPage() {
     return <p className="text-center text-gray-500">No data available</p>;
   }
 
+  const year = new Date().getFullYear();
+  
   return (
     <Card>
       <CardHeader>
         <CardTitle>Expense Tracker</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>January - December {year}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -91,7 +92,6 @@ export function ChartPage() {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              hide
             />
             <XAxis dataKey="expense" type="number" />
             <ChartTooltip
@@ -103,15 +103,7 @@ export function ChartPage() {
               layout="vertical"
               fill="var(--color-desktop)"
               radius={4}
-            >
-              <LabelList
-                dataKey="month"
-                position="insideLeft"
-                offset={8}
-                className="fill-[--color-label]"
-                fontSize={12}
-              />
-            </Bar>
+            ></Bar>
           </BarChart>
         </ChartContainer>
       </CardContent>
@@ -123,7 +115,8 @@ export function ChartPage() {
             className=" uppercase font-bold text-blue-500"
           >
             Statistical
-          </Link>.
+          </Link>
+          .
         </div>
       </CardFooter>
     </Card>

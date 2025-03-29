@@ -15,7 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as SecurityLoginImport } from './routes/security/login'
 import { Route as CreateExpenseImport } from './routes/create/expense'
-import { Route as CalcCalcImport } from './routes/calc/calc'
+import { Route as calcCalcImport } from './routes/(calc)/calc'
 import { Route as analysisStatisticalImport } from './routes/(analysis)/statistical'
 
 // Create Virtual Routes
@@ -65,9 +65,9 @@ const CreateExpenseRoute = CreateExpenseImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CalcCalcRoute = CalcCalcImport.update({
-  id: '/calc/calc',
-  path: '/calc/calc',
+const calcCalcRoute = calcCalcImport.update({
+  id: '/(calc)/calc',
+  path: '/calc',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,11 +95,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof analysisStatisticalImport
       parentRoute: typeof rootRoute
     }
-    '/calc/calc': {
-      id: '/calc/calc'
-      path: '/calc/calc'
-      fullPath: '/calc/calc'
-      preLoaderRoute: typeof CalcCalcImport
+    '/(calc)/calc': {
+      id: '/(calc)/calc'
+      path: '/calc'
+      fullPath: '/calc'
+      preLoaderRoute: typeof calcCalcImport
       parentRoute: typeof rootRoute
     }
     '/create/expense': {
@@ -145,7 +145,7 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/statistical': typeof analysisStatisticalRoute
-  '/calc/calc': typeof CalcCalcRoute
+  '/calc': typeof calcCalcRoute
   '/create/expense': typeof CreateExpenseRoute
   '/security/login': typeof SecurityLoginRoute
   '/create/budget': typeof CreateBudgetLazyRoute
@@ -156,7 +156,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/statistical': typeof analysisStatisticalRoute
-  '/calc/calc': typeof CalcCalcRoute
+  '/calc': typeof calcCalcRoute
   '/create/expense': typeof CreateExpenseRoute
   '/security/login': typeof SecurityLoginRoute
   '/create/budget': typeof CreateBudgetLazyRoute
@@ -168,7 +168,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/(analysis)/statistical': typeof analysisStatisticalRoute
-  '/calc/calc': typeof CalcCalcRoute
+  '/(calc)/calc': typeof calcCalcRoute
   '/create/expense': typeof CreateExpenseRoute
   '/security/login': typeof SecurityLoginRoute
   '/create/budget': typeof CreateBudgetLazyRoute
@@ -181,7 +181,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/statistical'
-    | '/calc/calc'
+    | '/calc'
     | '/create/expense'
     | '/security/login'
     | '/create/budget'
@@ -191,7 +191,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/statistical'
-    | '/calc/calc'
+    | '/calc'
     | '/create/expense'
     | '/security/login'
     | '/create/budget'
@@ -201,7 +201,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/(analysis)/statistical'
-    | '/calc/calc'
+    | '/(calc)/calc'
     | '/create/expense'
     | '/security/login'
     | '/create/budget'
@@ -213,7 +213,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   analysisStatisticalRoute: typeof analysisStatisticalRoute
-  CalcCalcRoute: typeof CalcCalcRoute
+  calcCalcRoute: typeof calcCalcRoute
   CreateExpenseRoute: typeof CreateExpenseRoute
   SecurityLoginRoute: typeof SecurityLoginRoute
   CreateBudgetLazyRoute: typeof CreateBudgetLazyRoute
@@ -224,7 +224,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   analysisStatisticalRoute: analysisStatisticalRoute,
-  CalcCalcRoute: CalcCalcRoute,
+  calcCalcRoute: calcCalcRoute,
   CreateExpenseRoute: CreateExpenseRoute,
   SecurityLoginRoute: SecurityLoginRoute,
   CreateBudgetLazyRoute: CreateBudgetLazyRoute,
@@ -244,7 +244,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/(analysis)/statistical",
-        "/calc/calc",
+        "/(calc)/calc",
         "/create/expense",
         "/security/login",
         "/create/budget",
@@ -258,8 +258,8 @@ export const routeTree = rootRoute
     "/(analysis)/statistical": {
       "filePath": "(analysis)/statistical.tsx"
     },
-    "/calc/calc": {
-      "filePath": "calc/calc.tsx"
+    "/(calc)/calc": {
+      "filePath": "(calc)/calc.tsx"
     },
     "/create/expense": {
       "filePath": "create/expense.tsx"

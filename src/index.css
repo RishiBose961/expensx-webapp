@@ -78,3 +78,5 @@
 .dark input[type="password"]::-webkit-textfield-decoration-container {
   filter: invert(1);
 }
+
+

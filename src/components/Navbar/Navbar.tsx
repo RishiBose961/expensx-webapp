@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ModeToggle } from "../mode-toggle";
 import { Button } from "../ui/button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUserAction } from "@/slice/authSlice";
 
 export function Navbar() {
 
@@ -50,6 +51,13 @@ function UserMenu({ mobile = false }: { mobile?: boolean }) {
       state.auth
   );
 
+ 
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutUserAction());
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -71,7 +79,7 @@ function UserMenu({ mobile = false }: { mobile?: boolean }) {
         }
        
         <DropdownMenuItem>Settings</DropdownMenuItem>
-        <DropdownMenuItem>Sign out</DropdownMenuItem>
+        <DropdownMenuItem className=" cursor-pointer" onClick={handleLogout}>Sign out</DropdownMenuItem>
         <DropdownMenuItem>
           Mood <ModeToggle/>
         </DropdownMenuItem>

@@ -3,18 +3,55 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
-import { Link } from "@tanstack/react-router";
+import { useMutation } from "@tanstack/react-query";
+import { Link, useNavigate } from "@tanstack/react-router";
+import axios from "axios";
 
 export default function Register() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const registerMutation = useMutation({
+    mutationFn: async ({
+      name,
+      email,
+      password,
+    }: {
+      name: string;
+      email: string;
+      password: string;
+    }) => {
+      const response = await axios.post(`http://localhost:5000/api/register`, {
+        name,
+        email,
+        password,
+      });
+      return response.data; // Return response data
+    },
+    onSuccess: () => {
+      alert("Register successful!");
+      navigate({ to: "/security/login" });
+    },
+    onError: (error: { response: { data: string } }) => {
+      console.error(error?.response.data);
+      setError(error?.response.data);
+    },
+  });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsSubmitting(true);
-    // TODO: Implement registration logic here
-    // This is where you would typically make an API call to register the user
-    await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulating API call
-    setIsSubmitting(false);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+
+    // Basic validation
+    if (!name || !email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    // Trigger the mutation
+    registerMutation.mutate({ name, email, password });
   };
 
   return (
@@ -42,6 +79,8 @@ export default function Register() {
                  placeholder-gray-500   rounded-t-md focus:outline-none focus:ring-indigo-500
                   focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Full Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
@@ -57,6 +96,8 @@ export default function Register() {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500  
                 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
@@ -72,17 +113,20 @@ export default function Register() {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 
                  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                 placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <p>{error}</p>
           </div>
 
           <div>
             <Button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              disabled={isSubmitting}
+              disabled={registerMutation.isPending}
             >
-              {isSubmitting ? "Registering..." : "Register"}
+              {registerMutation.isPending ? "Registering..." : "Register"}
             </Button>
           </div>
         </form>

@@ -20,6 +20,7 @@ function RootComponent() {
         <>
           {isAuthenticated ? (
             <>
+           
               <Navbar />
               <BottomNav />
             </>

@@ -8,7 +8,7 @@ const ShowCategory = () => {
   return (
     <div>
       <h2>Category</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 px-2 mt-4">
+      <div className="grid grid-cols-2 gap-2 lg:grid-cols-4 px-2 mt-4">
         {fetchCategory?.map((category, index) => (
           <div
             key={index}

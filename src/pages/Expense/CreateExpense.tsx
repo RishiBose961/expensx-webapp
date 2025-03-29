@@ -15,7 +15,7 @@ const CreateExpense = () => {
 
   const [error, setError] = useState("");
 
-  const { toast } = useToast()
+  const { toast } = useToast();
 
   const user = useSelector(
     (state: { auth: { user: { token: string } } }) => state.auth.user
@@ -53,8 +53,8 @@ const CreateExpense = () => {
       toast({
         title: `${amount}`,
         description: "You have successfully created an expense",
-        duration: 3000
-      })
+        duration: 3000,
+      });
       setAmount("");
       setCategory("");
       setDate("");
@@ -71,7 +71,7 @@ const CreateExpense = () => {
     setError("");
     // Basic validation
     if (!amount || !category || !date || !month) {
-      setError("Please fill in all fields");
+      return setError("Please fill in all fields");
     }
 
     createExpense.mutate({ amount: Number(amount), category, date, month });
