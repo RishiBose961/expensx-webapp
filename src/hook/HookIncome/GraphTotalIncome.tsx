@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import MonthYear from "./MonthYear";
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 
 interface MonthYearUsed {
   months?: string;
@@ -17,6 +18,8 @@ const GraphTotalIncome = ({ months }:MonthYearUsed) => {
     }) => state.auth
   );
 
+  const { base_url } = CheckEnvironment();
+
 
   
   const { selectedYear, selectedMonth } = MonthYear({months});
@@ -31,7 +34,7 @@ const GraphTotalIncome = ({ months }:MonthYearUsed) => {
     queryKey: ["totalsgraphresults", selectedYear, selectedMonth],
     queryFn: async () => {
       return await fetch(
-        `http://localhost:5000/api/rd/income-total-balance?month=${selectedYear}-${selectedMonth}`,
+        `${base_url}/api/rd/income-total-balance?month=${selectedYear}-${selectedMonth}`,
         {
           method: "GET",
           headers: {

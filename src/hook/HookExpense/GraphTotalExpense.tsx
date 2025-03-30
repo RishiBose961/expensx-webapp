@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
@@ -11,6 +12,8 @@ const GraphTotalExpense = () => {
           };
         }) => state.auth
       );
+
+      const { base_url } = CheckEnvironment();
     
 
 
@@ -23,7 +26,7 @@ const GraphTotalExpense = () => {
         queryKey: ["fetchgraphicExpenses"],
         queryFn: async () => {
           return await fetch(
-            `http://localhost:5000/api/sh/get-graphic-expense`,
+            `${base_url}/api/sh/get-graphic-expense`,
             {
               method: "GET",
               headers: {

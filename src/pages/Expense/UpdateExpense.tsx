@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -30,6 +31,8 @@ export function UpdateExpense() {
     }) => state.auth
   );
 
+  const { base_url } = CheckEnvironment();
+
   const { isPending, CategoryUserid } = CategoryUserID() as {
     isPending: boolean;
     CategoryUserid: { categorid: string };
@@ -38,7 +41,7 @@ export function UpdateExpense() {
   const createUpdateMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.put(
-        `http://localhost:5000/api/up/category-expense`,
+        `${base_url}/api/up/category-expense`,
         {
           id: CategoryUserid?.categorid,
           categorybased: tags,

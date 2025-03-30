@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import InputBox from "@/components/InputBox/InputBox";
 import SelectBox from "@/components/InputBox/SelectBox";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,9 @@ const CreateExpense = () => {
     (state: { auth: { user: { token: string } } }) => state.auth.user
   );
 
+  const { base_url } = CheckEnvironment();
+
+  
   const createExpense = useMutation({
     mutationFn: async ({
       amount,
@@ -34,7 +38,7 @@ const CreateExpense = () => {
       month: string;
     }) => {
       const response = await axios.post(
-        `http://localhost:5000/api/cr/create-expense`,
+        `${base_url}/api/cr/create-expense`,
         {
           amount,
           category,

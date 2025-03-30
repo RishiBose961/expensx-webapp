@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -27,10 +28,12 @@ export function FirstLogin({ firstLogin }: { firstLogin: boolean }) {
     (state: { auth: { user: { token: string } } }) => state.auth.user
   );
 
+  const { base_url } = CheckEnvironment();
+
   const createIncome = useMutation({
     mutationFn: async ({ amount }: { amount: string }) => {
       const response = await axios.post(
-        `http://localhost:5000/api/cr/income`,
+        `${base_url}/api/cr/income`,
         {
           incomeAmount: amount,
         },

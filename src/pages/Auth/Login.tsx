@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loadUser, loginUserAction } from "@/slice/authSlice";
@@ -12,6 +13,8 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { base_url } = CheckEnvironment();
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -28,7 +31,7 @@ export default function Login() {
       email: string;
       password: string;
     }) => {
-      const response = await axios.post(`http://localhost:5000/api/login`, {
+      const response = await axios.post(`${base_url}/api/login`, {
         email,
         password,
       });

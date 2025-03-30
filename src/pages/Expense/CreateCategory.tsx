@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -23,10 +24,12 @@ export function CreateCategory() {
     (state: { auth: { user: { token: string } } }) => state.auth.user
   );
 
+  const { base_url } = CheckEnvironment();
+
   const createPostMutation = useMutation({
     mutationFn: async () => {
       const response = await axios.post(
-        `http://localhost:5000/api/cr/category-expense`,
+        `${base_url}/api/cr/category-expense`,
         { categorybased: inputValue },
         {
           headers: {
@@ -36,8 +39,8 @@ export function CreateCategory() {
       );
       return response.data;
     },
-    onSuccess: (data) => {
-      console.log("Category created successfully:", data);
+    onSuccess: () => {
+      // console.log("Category created successfully:", data);
       setInputValue("");
       setError("");
     },

@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
@@ -6,6 +7,8 @@ const CategoryUserID = () => {
         (state: { auth: { isAuthenticated: boolean; isLoading: boolean; user: { token?: string } } }) =>
           state.auth
       );
+
+      const { base_url } = CheckEnvironment();
     
       const {
         isPending,
@@ -16,7 +19,7 @@ const CategoryUserID = () => {
         queryKey: ["CategoryUserIDs"],
         queryFn: async () => {
     
-          return await fetch(`http://localhost:5000/api/sh/getid-having`, {
+          return await fetch(`${base_url}/api/sh/getid-having`, {
             method: "GET",
             headers: {
               Authorization: `Bearer ${user?.token}`,

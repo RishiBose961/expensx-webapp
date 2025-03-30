@@ -6,12 +6,16 @@ import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import axios from "axios";
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 
 export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const { base_url } = CheckEnvironment();
+
   const navigate = useNavigate();
   const registerMutation = useMutation({
     mutationFn: async ({
@@ -23,7 +27,7 @@ export default function Register() {
       email: string;
       password: string;
     }) => {
-      const response = await axios.post(`http://localhost:5000/api/register`, {
+      const response = await axios.post(`${base_url}/api/register`, {
         name,
         email,
         password,

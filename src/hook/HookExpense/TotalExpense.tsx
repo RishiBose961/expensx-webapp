@@ -1,3 +1,4 @@
+import CheckEnvironment from "@/CheckEnvironment/CheckEnvironment";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 
@@ -11,6 +12,8 @@ const TotalExpense = () => {
       };
     }) => state.auth
   );
+
+  const { base_url } = CheckEnvironment();
 
   const date = new Date();
 
@@ -26,7 +29,7 @@ const TotalExpense = () => {
     queryKey: ["fetchtotalExpenses"],
     queryFn: async () => {
       return await fetch(
-        `http://localhost:5000/api/calculate-total-expenses?month=${year}-${month}`,
+        `${base_url}/api/calculate-total-expenses?month=${year}-${month}`,
         {
           method: "GET",
           headers: {
